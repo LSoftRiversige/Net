@@ -40,7 +40,7 @@ namespace AppNet
             MyWebServer.PrintRequestHeaders(context);
 
             string secondPath = context.Request.RawUrl.Replace("/MyApp", "");
-            
+
             secondPath = secondPath.Replace("/", "\\");
 
             string path = _baseFolder + secondPath;

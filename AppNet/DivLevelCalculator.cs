@@ -16,7 +16,7 @@ namespace AppNet
 
         public async static void Run()
         {
-            string html = await new HttpClient().GetStringAsync("http://itcloud.academy"); 
+            string html = await new HttpClient().GetStringAsync("http://itcloud.academy");
 
             int maxLevel = 0;
 
@@ -38,7 +38,7 @@ namespace AppNet
                 if (foundStart)
                 {
                     level++;
-                    
+
                     if (level > maxLevel)
                     {
                         maxLevel = level;
@@ -51,5 +51,5 @@ namespace AppNet
                 }
             } while (true);
         }
-    }   
+    }
 }

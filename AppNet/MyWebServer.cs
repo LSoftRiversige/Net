@@ -17,8 +17,6 @@ namespace AppNet
 
             HttpListenerContext context = await listener.GetContextAsync();
 
-            
-
             string msg = GetRequestText(context);
             context.Response.ContentLength64 = Encoding.UTF8.GetByteCount(msg);
             context.Response.StatusCode = (int)HttpStatusCode.OK;
