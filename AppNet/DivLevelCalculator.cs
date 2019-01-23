@@ -34,7 +34,8 @@ namespace AppNet
                 int divStartCurrentIndex = html.IndexOf(divStartPattern, startIndex);
                 int divFinishCurrentIndex = html.IndexOf(divFinishPattern, startIndex);
 
-                if (divStartCurrentIndex < divFinishCurrentIndex && divStartCurrentIndex != -1)
+                bool foundStart = divStartCurrentIndex < divFinishCurrentIndex && divStartCurrentIndex != -1;
+                if (foundStart)
                 {
                     level++;
                     
