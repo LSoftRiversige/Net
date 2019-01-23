@@ -17,9 +17,9 @@ namespace AppNet
 
             HttpListenerContext context = await listener.GetContextAsync();
 
-            PrintRequestHeaders(context);
+            
 
-            string msg = "You asked for " + context.Request.RawUrl;
+            string msg = GetRequestText(context);
             context.Response.ContentLength64 = Encoding.UTF8.GetByteCount(msg);
             context.Response.StatusCode = (int)HttpStatusCode.OK;
 
@@ -29,6 +29,29 @@ namespace AppNet
                 await writer.WriteAsync(msg);
             }
             listener.Stop();
+        }
+
+        private static string GetRequestText(HttpListenerContext context)
+        {
+            var s = new StringBuilder();
+            s.Append("<html lang=\"ru\">");
+            s.Append("<body><meta charset=\"utf-8\">");
+            s.Append("<head>");
+            s.Append("<title> Отображение заголовка HTTP запроса</title>");
+            s.Append("</head>");
+            s.Append("<h1> Отображение заголовка HTTP запроса</h1>");
+            s.Append("<div>");
+
+            s.Append($"<p style=\"color: red;\"><b>GET {context.Request.RawUrl}  HTTP/{context.Request.ProtocolVersion}</b></p>");
+            NameValueCollection headers = context.Request.Headers;
+            for (int i = 0; i < headers.Count; i++)
+            {
+                s.Append($"<p><b>{headers.GetKey(i)}</b>: {headers[i]}</p>");
+            }
+            s.Append("</div>");
+            s.Append("</body>");
+            s.Append("</html>");
+            return s.ToString();
         }
 
         public static void PrintRequestHeaders(HttpListenerContext context)
