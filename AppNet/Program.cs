@@ -10,22 +10,12 @@ namespace AppNet
     {
         static void Main(string[] args)
         {
-            DivLevelCalculator.Run();
-
-            MyWebServer.ListenAsync("http://localhost:51111/MyApp/");
-
-            //ClientRequest();
-
-            Console.WriteLine("Press any key");
-            Console.ReadKey();
-
-            //RunWebServerFromLecture();
-
+            RunWebServer();
         }
 
-        private static void RunWebServerFromLecture()
+        private static void RunWebServer()
         {
-            WebServer server = new WebServer("http://localhost:51111/MyApp/", @"E:\IT\Net\");
+            WebServer server = new WebServer("http://localhost:51111/MyApp/", "/MyApp/", @"C:\Dev\C#\Net", @"C:\Dev\C#\Net\ResponceControllers\bin\Debug\netcoreapp2.1\ResponceControllers.dll");
             try
             {
                 server.Start();
@@ -37,10 +27,19 @@ namespace AppNet
             }
         }
 
-        private static void ClientRequest()
-        {
-            WebClient wc = new WebClient();
-            wc.DownloadString("http://localhost:51111/MyApp/MyQuery/");
-        }
+        //private static void ClientRequest()
+        //{
+        //    WebClient wc = new WebClient();
+        //    wc.DownloadString("http://localhost:51111/MyApp/MyQuery/");
+        //}
+
+        //private static void OldCode()
+        //{
+        //    //DivLevelCalculator.Run();
+
+        //    //MyWebServer.ListenAsync("http://localhost:51111/MyApp/");"", 
+
+        //    //ClientRequest();
+        //}
     }
 }

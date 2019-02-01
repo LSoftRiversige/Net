@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ResponceControllers\ResponceControllers.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="InversionOfControlContainer">
+      <HintPath>..\..\IoC\InversionOfControlContainer\bin\Debug\netcoreapp2.1\InversionOfControlContainer.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

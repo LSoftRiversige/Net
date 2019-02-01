@@ -7,16 +7,20 @@ using System.Threading.Tasks;
 
 namespace AppNet
 {
-    class WebServer
+    public class WebServer
     {
         HttpListener _listener;
         string _baseFolder;
+        string _baseAddress;
+        string _dllControllersName;
 
-        public WebServer(string prefixUrl, string baseFolder)
+        public WebServer(string prefixUrl, string baseAddress, string baseFolder, string dllControllersName)
         {
             _listener = new HttpListener();
             _listener.Prefixes.Add(prefixUrl);
             _baseFolder = baseFolder;
+            _baseAddress = baseAddress;
+            _dllControllersName = dllControllersName;
         }
 
         public async void Start()
@@ -37,28 +41,28 @@ namespace AppNet
 
         private async void ProcessRequestAsync(HttpListenerContext context)
         {
-            MyWebServer.PrintRequestHeaders(context);
-
-            string secondPath = context.Request.RawUrl.Replace("/MyApp", "");
-
-            secondPath = secondPath.Replace("/", "\\");
-
-            string path = _baseFolder + secondPath;
-            //Console.WriteLine(path);
+            string command = context.Request.RawUrl;
+            string controllerName = command.Replace(_baseAddress, "") + "Controller";
 
             byte[] msg;
-            if (!File.Exists(path))
+
+            IResponceController controller = ControllerResolver.FindByName(_dllControllersName, controllerName);
+            if (controller != null)
             {
-                //Console.WriteLine("Resource not found");
-                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-                msg = Encoding.UTF8.GetBytes("sorry, this file doesn't exist");
+                context.Response.StatusCode = (int)HttpStatusCode.OK;
+                msg = Encoding.UTF8.GetBytes(controller.GetResponceText(context));
             }
             else
             {
-                context.Response.StatusCode = (int)HttpStatusCode.OK;
-                msg = await File.ReadAllBytesAsync(path);
+                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                msg = Encoding.UTF8.GetBytes(string.Format("Controller {0} not found", controllerName));
             }
 
+            await SendResponce(context, msg);
+        }
+
+        private static async Task SendResponce(HttpListenerContext context, byte[] msg)
+        {
             context.Response.ContentLength64 = msg.Length;
             using (Stream s = context.Response.OutputStream)
             {
